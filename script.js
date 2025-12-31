@@ -1,0 +1,25 @@
+
+let data = [];
+
+fetch('prestaciones.json')
+.then(res => res.json())
+.then(json => data = json);
+
+function consultar() {
+    const cedula = document.getElementById('cedula').value.trim();
+    const res = document.getElementById('resultado');
+    const persona = data.find(p => String(p.CEDULA) === cedula);
+
+    if (persona) {
+        res.innerHTML = `<p><strong>${persona.NOMBRES} ${persona.APELLIDOS}</strong><br>
+        Estado: ${persona.ESTADO}</p>
+        <p style="color:lightgreen;">Felicitaciones, usted cobrará Prestaciones Sociales</p>`;
+    } else {
+        res.innerHTML = `<p style="color:yellow;">Lamentablemente, usted NO cobrará Prestaciones Sociales</p>`;
+    }
+}
+
+function reiniciar() {
+    document.getElementById('cedula').value = '';
+    document.getElementById('resultado').innerHTML = '';
+}
