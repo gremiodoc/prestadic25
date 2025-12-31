@@ -1,21 +1,36 @@
-
 let data = [];
 
 fetch('prestaciones.json')
 .then(res => res.json())
 .then(json => data = json);
 
+function limpiarCedula(valor) {
+    return String(valor)
+        .replace(/[^0-9]/g, '') // solo números
+        .trim();
+}
+
 function consultar() {
-    const cedula = document.getElementById('cedula').value.trim();
+    const cedulaInput = document.getElementById('cedula').value;
+    const cedula = limpiarCedula(cedulaInput);
     const res = document.getElementById('resultado');
-    const persona = data.find(p => String(p.CEDULA) === cedula);
+
+    const persona = data.find(p => 
+        limpiarCedula(p.CEDULA) === cedula
+    );
 
     if (persona) {
-        res.innerHTML = `<p><strong>${persona.NOMBRES} ${persona.APELLIDOS}</strong><br>
+        res.innerHTML = `
+        <p><strong>${persona.NOMBRES} ${persona.APELLIDOS}</strong><br>
         Estado: ${persona.ESTADO}</p>
-        <p style="color:lightgreen;">Felicitaciones, usted cobrará Prestaciones Sociales</p>`;
+        <p style="color:lightgreen;">
+        Felicitaciones, usted cobrará Prestaciones Sociales
+        </p>`;
     } else {
-        res.innerHTML = `<p style="color:yellow;">Lamentablemente, usted NO cobrará Prestaciones Sociales</p>`;
+        res.innerHTML = `
+        <p style="color:yellow;">
+        Lamentablemente, usted NO cobrará Prestaciones Sociales
+        </p>`;
     }
 }
 
